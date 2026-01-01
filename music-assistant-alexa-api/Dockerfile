@@ -1,14 +1,11 @@
+# Stage 1: Get the alexa-api image
+FROM ghcr.io/alams154/music-assistant-alexa-api:latest AS alexa-api
+
+# Stage 2: Build final image with HA base
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Multi-stage: get the alexa-api app from its image
-FROM ghcr.io/alams154/music-assistant-alexa-api:latest AS alexa-api
-
-# Back to HA base
-FROM ${BUILD_FROM}
-
-# Copy the alexa-api app files from its image
-# We'll copy the entire app directory structure
+# Copy everything from the alexa-api image
 COPY --from=alexa-api / /
 
 # Copy run script
