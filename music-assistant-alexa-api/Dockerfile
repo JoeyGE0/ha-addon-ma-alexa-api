@@ -10,12 +10,17 @@ COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 
 # Copy app files from alexa-api image
-# Only copy specific directories to avoid overwriting HA base files
-COPY --from=alexa-api /app /app
-COPY --from=alexa-api /usr/src/app /usr/src/app
-COPY --from=alexa-api /opt /opt
-COPY --from=alexa-api /package.json /package.json 2>/dev/null || true
-COPY --from=alexa-api /node_modules /node_modules 2>/dev/null || true
+# Copy to temp location first, then move if they exist
+COPY --from=alexa-api / /tmp/alexa-api/
+
+# Move files selectively (only if they exist)
+RUN \
+    if [ -d /tmp/alexa-api/app ]; then cp -r /tmp/alexa-api/app /app; fi && \
+    if [ -d /tmp/alexa-api/usr/src/app ]; then cp -r /tmp/alexa-api/usr/src/app /usr/src/app; fi && \
+    if [ -d /tmp/alexa-api/opt ]; then cp -r /tmp/alexa-api/opt /opt; fi && \
+    if [ -f /tmp/alexa-api/package.json ]; then cp /tmp/alexa-api/package.json /package.json; fi && \
+    if [ -d /tmp/alexa-api/node_modules ]; then cp -r /tmp/alexa-api/node_modules /node_modules; fi && \
+    rm -rf /tmp/alexa-api
 
 # Use run.sh as entrypoint
 ENTRYPOINT ["/run.sh"]
