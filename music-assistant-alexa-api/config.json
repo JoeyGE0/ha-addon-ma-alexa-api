@@ -20,5 +20,9 @@
   "schema": {
     "username": "str",
     "password": "str"
+  },
+  "environment": {
+    "USERNAME": "{{ username }}",
+    "PASSWORD": "{{ password }}"
   }
 }
