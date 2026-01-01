@@ -1,0 +1,24 @@
+{
+  "name": "Music Assistant Alexa API Bridge",
+  "version": "latest",
+  "slug": "music-assistant-alexa-api",
+  "description": "API bridge for Music Assistant Alexa integration",
+  "url": "https://github.com/alams154/music-assistant-alexa-api",
+  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "ports": {
+    "3000/tcp": 3000
+  },
+  "ports_description": {
+    "3000/tcp": "API bridge port"
+  },
+  "options": {
+    "username": "admin",
+    "password": "test"
+  },
+  "schema": {
+    "username": "str",
+    "password": "str"
+  }
+}
