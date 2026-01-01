@@ -9,16 +9,16 @@
   "boot": "auto",
   "ports": {
     "3000/tcp": 3000
-  },
+  }
   "ports_description": {
     "3000/tcp": "API bridge port"
-  },
+  }
   "options": {
     "username": "admin",
     "password": "test"
-  },
+  }
   "schema": {
     "username": "str",
     "password": "str"
-  },
+  }
 }
