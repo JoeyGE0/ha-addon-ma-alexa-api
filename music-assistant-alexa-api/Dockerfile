@@ -1,9 +1,10 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Copy run script
+# Copy minimal wrapper script
 COPY run.sh /run.sh
-RUN chmod a+x /run.sh
+RUN chmod +x /run.sh
 
-# Use run.sh as entrypoint
+# Preserve original CMD but use our wrapper as entrypoint
+# This way we can inject env vars before the original command runs
 ENTRYPOINT ["/run.sh"]
