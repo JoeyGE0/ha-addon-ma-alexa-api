@@ -1,11 +1,17 @@
-#!/bin/sh
-# Minimal wrapper - just export env vars and exec original command
+#!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
 
-# HA Supervisor sets these from config.json schema
-# If not set, use defaults
-export USERNAME="${USERNAME:-admin}"
-export PASSWORD="${PASSWORD:-test}"
+# Read config from HA
+USERNAME=$(bashio::config 'username')
+PASSWORD=$(bashio::config 'password')
 
-# Get the original CMD from the base image and execute it
-# If no args provided, the base image's CMD will run
-exec "$@"
+export USERNAME
+export PASSWORD
+
+# Run the alexa-api container
+exec docker run --rm -i \
+    -p 3000:3000 \
+    -e USERNAME="${USERNAME}" \
+    -e PASSWORD="${PASSWORD}" \
+    --name music-assistant-alexa-api \
+    ghcr.io/alams154/music-assistant-alexa-api:latest

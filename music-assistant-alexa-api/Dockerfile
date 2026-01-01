@@ -1,10 +1,12 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Copy minimal wrapper script
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
+# Install docker-cli to run the alexa-api container
+RUN apk add --no-cache docker-cli
 
-# Preserve original CMD but use our wrapper as entrypoint
-# This way we can inject env vars before the original command runs
+# Copy run script
+COPY run.sh /run.sh
+RUN chmod a+x /run.sh
+
+# Use run.sh as entrypoint
 ENTRYPOINT ["/run.sh"]
